@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Badge, Button, Card } from "react-bootstrap";
 import classNames from "classnames";
 import styles from "./BookItem.module.css";
@@ -10,6 +11,17 @@ const BookItem = ({
   available,
   imageUrl,
 }) => {
+  const [bookTitle, setBookTitle] = useState(title);
+  const [bookAvailability, setBookAvailability] = useState(available);
+
+  const handleChangeTitle = () => {
+    setBookTitle("¡Título actualizado!");
+  };
+
+  const handleChangeAvailability = () => {
+    setBookAvailability((prevBookAvailability) => !prevBookAvailability);
+  };
+
   return (
     <Card className={classNames("mx-3", styles.card)}>
       <div className={styles.imageWrapper}>
@@ -20,11 +32,11 @@ const BookItem = ({
               ? imageUrl
               : "https://images.pexels.com/photos/35098074/pexels-photo-35098074.jpeg"
           }
-          alt={title}
+          alt={bookTitle}
         />
       </div>
       <Card.Body>
-        {available ? (
+        {bookAvailability ? (
           <Badge bg="success" className={styles.badge}>
             Disponible
           </Badge>
@@ -33,7 +45,7 @@ const BookItem = ({
             No disponible
           </Badge>
         )}
-        <Card.Title className={styles.title}>{title}</Card.Title>
+        <Card.Title className={styles.title}>{bookTitle}</Card.Title>
         <Card.Subtitle className={styles.author}>{author}</Card.Subtitle>
         <div>
           {rating} estrella{rating !== 1 ? "s" : ""}
@@ -41,7 +53,16 @@ const BookItem = ({
         <p className={styles.pageCount}>
           {pageCount} página{pageCount !== 1 ? "s" : ""}
         </p>
-        <Button className={styles.button}>Actualizar título</Button>
+        <Button onClick={handleChangeTitle} className={styles.button}>
+          Actualizar título
+        </Button>
+        <Button
+          onClick={handleChangeAvailability}
+          variant="secondary"
+          className="mt-3"
+        >
+          Cambiar disponibilidad
+        </Button>
       </Card.Body>
     </Card>
   );
