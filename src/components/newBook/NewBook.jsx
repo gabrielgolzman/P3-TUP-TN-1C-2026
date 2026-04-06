@@ -23,6 +23,7 @@ const NewBook = ({ onAddBook }) => {
     const handleAddNewBook = (event) => {
         event.preventDefault();
         onAddBook(form);
+        setForm(initialForm)
     }
 
     return (

@@ -11,12 +11,13 @@ const BookItem = ({
   rating,
   available,
   imageUrl,
+  isSelected,
+  onSelectBook
 }) => {
-  const [bookTitle, setBookTitle] = useState(title);
   const [bookAvailability, setBookAvailability] = useState(available);
 
-  const handleChangeTitle = () => {
-    setBookTitle("¡Título actualizado!");
+  const handleSelectBook = () => {
+    onSelectBook(title);
   };
 
   const handleChangeAvailability = () => {
@@ -24,7 +25,11 @@ const BookItem = ({
   };
 
   return (
-    <Card className={classNames("mx-3", styles.card)}>
+    <Card className={classNames(
+      "mx-3",
+      styles.card,
+      isSelected ? "border border-2 border-primary" : ""
+    )}>
       <div className={styles.imageWrapper}>
         <Card.Img
           className={styles.image}
@@ -33,7 +38,7 @@ const BookItem = ({
               ? imageUrl
               : "https://images.pexels.com/photos/35098074/pexels-photo-35098074.jpeg"
           }
-          alt={bookTitle}
+          alt={title}
         />
       </div>
       <Card.Body>
@@ -46,7 +51,7 @@ const BookItem = ({
             No disponible
           </Badge>
         )}
-        <Card.Title className={styles.title}>{bookTitle}</Card.Title>
+        <Card.Title className={styles.title}>{title}</Card.Title>
         <Card.Subtitle className={styles.author}>{author}</Card.Subtitle>
         <div>
           {rating} estrella{decidePlural(rating)}
@@ -54,8 +59,8 @@ const BookItem = ({
         <p className={styles.pageCount}>
           {pageCount} página{decidePlural(pageCount)}
         </p>
-        <Button onClick={handleChangeTitle} className={styles.button}>
-          Actualizar título
+        <Button onClick={handleSelectBook} className={styles.button}>
+          Seleccionar libro
         </Button>
         <Button
           onClick={handleChangeAvailability}
