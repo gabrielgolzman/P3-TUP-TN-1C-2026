@@ -16,11 +16,11 @@ const App = () => {
 
   return (
     <>
-      {/* <h1>¡Bienvenidos a book champions!</h1> */}
+      <h1>¡Bienvenidos a book champions!</h1>
       <div className="d-flex flex-column align-items-center">
-        {/* <NewBook onAddBook={handleAddBook} />
-        <BooksContainer books={books} /> */}
-        <Login />
+        <NewBook onAddBook={handleAddBook} />
+        <BooksContainer books={books} />
+        {/* <Login /> */}
       </div>
     </>
   );

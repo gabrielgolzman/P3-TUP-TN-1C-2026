@@ -74,6 +74,9 @@ const BookItem = ({
         >
           Cambiar disponibilidad
         </Button>
+        <Button className="mt-3 mx-2" variant="danger">
+          Eliminar libro
+        </Button>
       </Card.Body>
     </Card>
   );
