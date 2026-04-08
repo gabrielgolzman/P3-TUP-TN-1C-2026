@@ -13,13 +13,16 @@ const App = () => {
       id: prevBooks[prevBooks.length - 1]?.id + 1
     }])
   }
+  const handleDeleteBook = (id) => {
+    setBooks(prevBooks => prevBooks.filter(book => book.id !== id));
+  }
 
   return (
     <>
       <h1>¡Bienvenidos a book champions!</h1>
       <div className="d-flex flex-column align-items-center">
         <NewBook onAddBook={handleAddBook} />
-        <BooksContainer books={books} />
+        <BooksContainer books={books} onDeleteBook={handleDeleteBook} />
         {/* <Login /> */}
       </div>
     </>

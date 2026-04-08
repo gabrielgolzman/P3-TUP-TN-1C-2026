@@ -6,6 +6,7 @@ import styles from "./BookItem.module.css";
 import { Star, StarFill } from "react-bootstrap-icons";
 
 const BookItem = ({
+  id,
   title,
   author,
   pageCount,
@@ -13,7 +14,8 @@ const BookItem = ({
   available,
   imageUrl,
   isSelected,
-  onSelectBook
+  onSelectBook,
+  onShowDeleteModal
 }) => {
   const [bookAvailability, setBookAvailability] = useState(available);
 
@@ -28,6 +30,10 @@ const BookItem = ({
   const handleChangeAvailability = () => {
     setBookAvailability((prevBookAvailability) => !prevBookAvailability);
   };
+
+  const handleDeleteBook = () => {
+    onShowDeleteModal({ id, title })
+  }
 
   return (
     <Card className={classNames(
@@ -74,7 +80,7 @@ const BookItem = ({
         >
           Cambiar disponibilidad
         </Button>
-        <Button className="mt-3 mx-2" variant="danger">
+        <Button className="mt-3 mx-2" variant="danger" onClick={handleDeleteBook}>
           Eliminar libro
         </Button>
       </Card.Body>
