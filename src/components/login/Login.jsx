@@ -1,15 +1,18 @@
 import { useState, useRef } from "react";
+import classNames from "classnames";
 import { Button, Card, Col, Form, FormGroup, Row } from "react-bootstrap";
 import { initialLoginFormErrors } from "./Login.data";
-import classNames from "classnames";
+import { useNavigate } from "react-router";
 
-const Login = () => {
+const Login = ({ onLogin }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [errors, setErrors] = useState(initialLoginFormErrors)
+    const [errors, setErrors] = useState(initialLoginFormErrors);
 
     const emailInputRef = useRef(null);
     const passwordInputRef = useRef(null);
+
+    const navigate = useNavigate();
 
     const handleEmailChange = (event) => {
         setEmail(event.target.value)
@@ -44,7 +47,8 @@ const Login = () => {
             return;
         }
         setErrors(initialLoginFormErrors)
-        alert(`El email ingresado es: ${email} y el password es: ${password}`)
+        onLogin();
+        navigate("/library")
     }
 
     return (
