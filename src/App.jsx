@@ -10,6 +10,12 @@ const App = () => {
   const handleLogIn = () => {
     setIsSignedIn(true);
   }
+
+  const handleLogout = () => {
+    setIsSignedIn(false);
+  }
+
+
   return (
     <div className="d-flex flex-column align-items-center">
       <BrowserRouter>
@@ -17,7 +23,7 @@ const App = () => {
           <Route path="login" element={<Login onLogin={handleLogIn} />} />
           <Route path="library" element={
             <Protected isSignedIn={isSignedIn}>
-              <Dashboard />
+              <Dashboard onLogout={handleLogout} />
             </Protected>
           } />
           <Route path="*" element={<NotFound />} />
