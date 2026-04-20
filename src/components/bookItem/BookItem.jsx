@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Badge, Button, Card } from "react-bootstrap";
 import classNames from "classnames";
-import { componentArray, decidePlural } from "./BookItem.helpers";
+import { decidePlural } from "./BookItem.helpers";
 import styles from "./BookItem.module.css";
 import { Star, StarFill } from "react-bootstrap-icons";
+import { useNavigate } from "react-router";
 
 const BookItem = ({
   id,
@@ -13,18 +14,25 @@ const BookItem = ({
   rating,
   available,
   imageUrl,
-  isSelected,
-  onSelectBook,
+  summary,
   onShowDeleteModal
 }) => {
   const [bookAvailability, setBookAvailability] = useState(available);
 
-  const bookStars = componentArray(rating, <StarFill />)
+  const navigate = useNavigate();
 
-  const bookStarsEmpty = componentArray(5 - rating, <Star />)
+  const bookStars = Array.from({ length: rating }, (_, i) => <StarFill key={i} />)
+
+  const bookStarsEmpty = Array.from({ length: 5 - rating }, (_, i) => <Star key={i} />)
 
   const handleSelectBook = () => {
-    onSelectBook(title);
+    navigate(`${id}`, {
+      state: {
+        book: {
+          title, author, rating, pageCount, summary, imageUrl, available
+        }
+      }
+    })
   };
 
   const handleChangeAvailability = () => {
@@ -39,7 +47,6 @@ const BookItem = ({
     <Card className={classNames(
       "mx-3",
       styles.card,
-      isSelected ? "border border-2 border-primary" : ""
     )}>
       <div className={styles.imageWrapper}>
         <Card.Img

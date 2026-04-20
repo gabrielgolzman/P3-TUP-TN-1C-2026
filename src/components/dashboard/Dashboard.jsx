@@ -1,11 +1,22 @@
 import { useState } from "react";
+import { Route, Routes, useLocation, useNavigate } from "react-router";
+import { Button } from "react-bootstrap";
+
 import BooksContainer from "../booksContainer/BooksContainer"
 import NewBook from "../newBook/NewBook"
+import NotFound from "../routes/notFound/NotFound";
 import { BOOKS } from "../../data/books";
-import { Button } from "react-bootstrap";
+import BookDetails from "../bookDetails/BookDetails";
 
 const Dashboard = ({ onLogout }) => {
     const [books, setBooks] = useState(BOOKS);
+
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const handleNavigateAddBook = () => {
+        navigate("/library/add-book", { replace: location.pathname === "/library/add-book" })
+    }
 
     const handleAddBook = (form) => {
         setBooks(prevBooks => [...prevBooks, {
@@ -21,15 +32,22 @@ const Dashboard = ({ onLogout }) => {
         onLogout()
     }
     return (
+
         <>
-            <div className="w-100 d-flex justify-content-center mt-3 ">
+            <div className="w-100 d-flex justify-content-end my-3 px-3 gap-2">
+                <Button variant="success" onClick={handleNavigateAddBook}>Agregar libro</Button>
                 <Button onClick={handleLogout}>Cerrar sesión</Button>
             </div>
-            <NewBook
-                onAddBook={handleAddBook} />
-            <BooksContainer
-                books={books}
-                onDeleteBook={handleDeleteBook} />
+            <Routes >
+                <Route index element={<BooksContainer books={books}
+                    onDeleteBook={handleDeleteBook} />} />
+                <Route path="/add-book" element={<NewBook
+                    onAddBook={handleAddBook} />} />
+                <Route path="/:id" element={<BookDetails />} />
+                <Route path="*" element={<NotFound />} />
+            </Routes>
+
+
         </>
     )
 }

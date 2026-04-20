@@ -2,9 +2,12 @@
 import { useState } from "react";
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
 import { initialForm } from "./NewBook.data";
+import { useNavigate } from "react-router";
 
 const NewBook = ({ onAddBook }) => {
     const [form, setForm] = useState(initialForm);
+
+    const navigate = useNavigate();
 
     const handleChangeFormAttribute = (event, attr) => {
         setForm((prevForm) => ({
@@ -18,6 +21,10 @@ const NewBook = ({ onAddBook }) => {
             ...prevForm,
             available: event.target.checked
         }))
+    }
+
+    const handleGoBack = () => {
+        navigate("/library")
     }
 
     const handleAddNewBook = (event) => {
@@ -99,9 +106,14 @@ const NewBook = ({ onAddBook }) => {
                                 className="mb-3"
                                 label="¿Disponible?"
                             />
-                            <Button variant="primary" type="submit">
-                                Agregar lectura
-                            </Button>
+                            <div className="d-flex gap-2 mb-1">
+                                <Button variant="secondary" onClick={handleGoBack}>
+                                    Volver
+                                </Button>
+                                <Button variant="primary" type="submit">
+                                    Agregar lectura
+                                </Button>
+                            </div>
                         </Col>
                     </Row>
                 </Form>

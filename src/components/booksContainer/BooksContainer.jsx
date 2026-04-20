@@ -6,16 +6,11 @@ import { initialBookToDelete } from "./BooksContainer.data";
 
 const BooksContainer = ({ books, onDeleteBook }) => {
   const [searchBook, setSearchBook] = useState("");
-  const [selectedTitle, setSelectedTitle] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [bookToDelete, setBookToDelete] = useState(initialBookToDelete)
 
   const handleSearch = (searchValue) => {
     setSearchBook(searchValue)
-  }
-
-  const handleSelectBook = (title) => {
-    setSelectedTitle(title);
   }
 
   const handleShowModal = (newBookToDelete) => {
@@ -42,8 +37,7 @@ const BooksContainer = ({ books, onDeleteBook }) => {
           pageCount={book.pageCount}
           rating={book.rating}
           available={book.available}
-          isSelected={selectedTitle === book.title}
-          onSelectBook={handleSelectBook}
+          summary={book.summary}
           onShowDeleteModal={handleShowModal}
         />
       );
@@ -56,8 +50,6 @@ const BooksContainer = ({ books, onDeleteBook }) => {
         book={bookToDelete}
         onHide={handleHideModal}
         onDeleteBook={onDeleteBook} />
-      {selectedTitle &&
-        <p className="mb-2">Usted ha seleccionado el libro: <b>{selectedTitle}</b></p>}
       <BooksSearch onSearch={handleSearch} />
       {
         booksMapped.length > 0 ?

@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 import Login from "./components/login/Login"
 import Dashboard from "./components/dashboard/Dashboard";
 import NotFound from "./components/routes/notFound/NotFound";
@@ -20,12 +20,11 @@ const App = () => {
     <div className="d-flex flex-column align-items-center">
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={<Navigate to="/library" replace />} />
           <Route path="login" element={<Login onLogin={handleLogIn} />} />
-          <Route path="library" element={
-            <Protected isSignedIn={isSignedIn}>
-              <Dashboard onLogout={handleLogout} />
-            </Protected>
-          } />
+          <Route element={<Protected isSignedIn={isSignedIn} />}>
+            <Route path="library/*" element={<Dashboard onLogout={handleLogout} />} />
+          </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
