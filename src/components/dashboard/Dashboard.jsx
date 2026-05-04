@@ -1,28 +1,45 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Route, Routes, useLocation, useNavigate } from "react-router";
 import { Button } from "react-bootstrap";
 
 import BooksContainer from "../booksContainer/BooksContainer"
 import NewBook from "../newBook/NewBook"
 import NotFound from "../routes/notFound/NotFound";
-import { BOOKS } from "../../data/books";
 import BookDetails from "../bookDetails/BookDetails";
 
 const Dashboard = ({ onLogout }) => {
-    const [books, setBooks] = useState(BOOKS);
+    const [books, setBooks] = useState([]);
 
     const navigate = useNavigate();
     const location = useLocation();
+
+    useEffect(() => {
+        fetch("http://localhost:3000/books")
+            .then(res => res.json())
+            .then(data => setBooks([...data]))
+            .catch(error => console.log(error));
+    }, [])
 
     const handleNavigateAddBook = () => {
         navigate("/library/add-book", { replace: location.pathname === "/library/add-book" })
     }
 
     const handleAddBook = (form) => {
-        setBooks(prevBooks => [...prevBooks, {
-            ...form,
-            id: prevBooks[prevBooks.length - 1]?.id + 1
-        }])
+        fetch("http://localhost:3000/books", {
+            headers: {
+                "Content-Type": "application/json"
+            },
+            method: "POST",
+            body: JSON.stringify(form)
+        })
+            .then(res => res.json())
+            .then((id) => {
+                setBooks(prevBooks => [{
+                    ...form,
+                    id,
+                }, ...prevBooks])
+            })
+            .catch(err => console.log(err))
     }
     const handleDeleteBook = (id) => {
         setBooks(prevBooks => prevBooks.filter(book => book.id !== id));
