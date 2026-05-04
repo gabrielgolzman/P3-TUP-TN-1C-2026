@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
 import { initialForm } from "./NewBook.data";
 import { useNavigate } from "react-router";
+import { errorToast } from "../toast/toast";
 
 const NewBook = ({ onAddBook }) => {
     const [form, setForm] = useState(initialForm);
@@ -29,6 +30,8 @@ const NewBook = ({ onAddBook }) => {
 
     const handleAddNewBook = (event) => {
         event.preventDefault();
+        if (!form.title || !form.author)
+            return errorToast("El autor y el título son requeridos")
         onAddBook(form);
         setForm(initialForm)
     }

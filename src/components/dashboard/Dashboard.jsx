@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Route, Routes, useLocation, useNavigate } from "react-router";
 import { Button } from "react-bootstrap";
-
+import { successToast } from "../toast/toast";
 import BooksContainer from "../booksContainer/BooksContainer"
 import NewBook from "../newBook/NewBook"
 import NotFound from "../routes/notFound/NotFound";
@@ -37,12 +37,24 @@ const Dashboard = ({ onLogout }) => {
                 setBooks(prevBooks => [{
                     ...form,
                     id,
-                }, ...prevBooks])
+                }, ...prevBooks]);
+                successToast(`¡Libro ${form.title} agregado correctamente!`);
+                navigate("/", { replace: true })
             })
             .catch(err => console.log(err))
     }
     const handleDeleteBook = (id) => {
-        setBooks(prevBooks => prevBooks.filter(book => book.id !== id));
+        fetch(`http://localhost:3000/books/${id}`, {
+            headers: {
+                "Content-Type": "application/json"
+            },
+            method: "DELETE"
+        })
+            .then(() => {
+                setBooks(prevBooks => prevBooks.filter(book => book.id !== id));
+                successToast("El libro se elimino correctamente")
+            })
+            .catch(err => console.log(err))
     }
 
     const handleLogout = () => {

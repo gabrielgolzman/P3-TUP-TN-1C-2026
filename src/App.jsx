@@ -1,4 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router";
+import { ToastContainer } from "react-toastify";
 import Login from "./components/login/Login"
 import Dashboard from "./components/dashboard/Dashboard";
 import NotFound from "./components/routes/notFound/NotFound";
@@ -18,6 +19,7 @@ const App = () => {
 
   return (
     <div className="d-flex flex-column align-items-center">
+      <ToastContainer />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Navigate to="/library" replace />} />
