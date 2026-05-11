@@ -1,18 +1,28 @@
-import { useState, useRef } from "react";
-import classNames from "classnames";
-import { Button, Card, Col, Form, FormGroup, Row } from "react-bootstrap";
-import { initialLoginFormErrors } from "./Login.data";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router";
+import classNames from "classnames";
+import { Row, Form, FormGroup, Col, Button, Card } from "react-bootstrap"
+import { initialRegisterFormErrors } from "./Register.data";
 
-const Login = ({ onLogin }) => {
+const Register = () => {
+    const [name, setName] = useState("")
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [errors, setErrors] = useState(initialLoginFormErrors);
+    const [errors, setErrors] = useState(initialRegisterFormErrors);
 
     const emailInputRef = useRef(null);
     const passwordInputRef = useRef(null);
 
     const navigate = useNavigate();
+
+
+    const handleNameChange = (event) => {
+        setName(event.target.value)
+        setErrors((prevErrors) => ({
+            ...prevErrors,
+            name: false
+        }))
+    }
 
     const handleEmailChange = (event) => {
         setEmail(event.target.value)
@@ -26,7 +36,7 @@ const Login = ({ onLogin }) => {
         setPassword(event.target.value)
     }
 
-    const handleLogin = (event) => {
+    const handleRegister = (event) => {
         event.preventDefault();
 
         if (email === "") {
@@ -46,23 +56,21 @@ const Login = ({ onLogin }) => {
             }))
             return;
         }
-        setErrors(initialLoginFormErrors)
-        fetch("http://localhost:3000/login", {
+
+        fetch("http://localhost:3000/register", {
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json"
             },
             method: "POST",
-            body: JSON.stringify({ email, password })
+            body: JSON.stringify({ name, email, password })
         })
             .then(res => res.json())
-            .then(({ token }) => {
-                localStorage.setItem("book-champions-token", token);
-                onLogin();
-                navigate("/library")
+            .then(() => {
+                setErrors(initialRegisterFormErrors)
+                navigate("/login")
             })
             .catch(err => console.log(err))
-
     }
 
     return (
@@ -71,7 +79,19 @@ const Login = ({ onLogin }) => {
                 <Row className="mb-2">
                     <h5>¡Bienvenidos a Books Champion!</h5>
                 </Row>
-                <Form onSubmit={handleLogin} >
+                <Form onSubmit={handleRegister} >
+                    <FormGroup className="mb-4">
+                        <Form.Control
+                            type="text"
+                            className={classNames({
+                                "border border-danger": errors.email
+                            })}
+                            placeholder="Ingresar nombre de usuario"
+                            onChange={handleNameChange}
+                            value={name}
+                        />
+                        {errors.name && <p className="text-danger">El email es obligatorio.</p>}
+                    </FormGroup>
                     <FormGroup className="mb-4">
                         <Form.Control
                             type="text"
@@ -101,8 +121,8 @@ const Login = ({ onLogin }) => {
                     <Row>
                         <Col />
                         <Col md={6} className="d-flex justify-content-end">
-                            <Button variant="secondary" type="submit">
-                                Iniciar sesión
+                            <Button variant="primary" type="submit">
+                                Registrarse
                             </Button>
                         </Col>
                     </Row>
@@ -110,7 +130,6 @@ const Login = ({ onLogin }) => {
             </Card.Body>
         </Card>
     );
-};
+}
 
-
-export default Login;
+export default Register

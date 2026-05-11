@@ -5,6 +5,7 @@ import Dashboard from "./components/dashboard/Dashboard";
 import NotFound from "./components/routes/notFound/NotFound";
 import { useState } from "react";
 import Protected from "./components/routes/protected/Protected";
+import Register from "./components/register/Register";
 const App = () => {
   const [isSignedIn, setIsSignedIn] = useState(false);
 
@@ -14,6 +15,7 @@ const App = () => {
 
   const handleLogout = () => {
     setIsSignedIn(false);
+    localStorage.removeItem("book-champions-token")
   }
 
 
@@ -23,6 +25,7 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Navigate to="/library" replace />} />
+          <Route path="register" element={<Register />} />
           <Route path="login" element={<Login onLogin={handleLogIn} />} />
           <Route element={<Protected isSignedIn={isSignedIn} />}>
             <Route path="library/*" element={<Dashboard onLogout={handleLogout} />} />
