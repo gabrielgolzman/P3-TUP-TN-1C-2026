@@ -4,5 +4,6 @@ export const initialForm = {
     rating: "",
     pageCount: "",
     imageUrl: "",
+    summary: "",
     available: false
 }

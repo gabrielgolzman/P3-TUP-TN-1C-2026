@@ -3,10 +3,13 @@ import { useState } from "react";
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
 import { initialForm } from "./NewBook.data";
 import { useNavigate } from "react-router";
-import { errorToast } from "../toast/toast";
+import { errorToast } from "../../shared/toast/toast";
 
-const NewBook = ({ onAddBook }) => {
-    const [form, setForm] = useState(initialForm);
+const NewBook = ({ book, onAddBook, onFormClosed, onEditBook }) => {
+    const [form, setForm] = useState(book ?? initialForm);
+
+    const isEditing = book !== undefined ? true : false;
+
 
     const navigate = useNavigate();
 
@@ -25,14 +28,26 @@ const NewBook = ({ onAddBook }) => {
     }
 
     const handleGoBack = () => {
+        if (isEditing) {
+            onFormClosed()
+            return;
+        }
         navigate("/library")
     }
 
     const handleAddNewBook = (event) => {
         event.preventDefault();
         if (!form.title || !form.author)
-            return errorToast("El autor y el título son requeridos")
-        onAddBook(form);
+            return errorToast("El autor y el título son requeridos");
+
+        if (isEditing) {
+            onEditBook(form)
+            return;
+        }
+        else {
+            onAddBook(form);
+
+        }
         setForm(initialForm)
     }
 
@@ -102,7 +117,7 @@ const NewBook = ({ onAddBook }) => {
                     <Row className="justify-content-end">
                         <Col md={3} className="d-flex flex-column justify-content-end align-items-end">
                             <Form.Check
-                                value={form.available}
+                                checked={form.available}
                                 onChange={handleChangeAvailablility}
                                 type="switch"
                                 id="available"
@@ -111,10 +126,10 @@ const NewBook = ({ onAddBook }) => {
                             />
                             <div className="d-flex gap-2 mb-1">
                                 <Button variant="secondary" onClick={handleGoBack}>
-                                    Volver
+                                    {isEditing ? "Cancelar" : "Volver"}
                                 </Button>
                                 <Button variant="primary" type="submit">
-                                    Agregar lectura
+                                    {isEditing ? "Editar" : "Agregar"} lectura
                                 </Button>
                             </div>
                         </Col>

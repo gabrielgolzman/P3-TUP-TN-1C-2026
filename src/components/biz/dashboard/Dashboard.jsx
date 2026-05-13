@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { Route, Routes, useLocation, useNavigate } from "react-router";
 import { Button } from "react-bootstrap";
-import { successToast } from "../toast/toast";
+import { successToast } from "../../shared/toast/toast";
 import BooksContainer from "../booksContainer/BooksContainer"
 import NewBook from "../newBook/NewBook"
-import NotFound from "../routes/notFound/NotFound";
+import NotFound from "../../routes/notFound/NotFound";
 import BookDetails from "../bookDetails/BookDetails";
 
 const Dashboard = ({ onLogout }) => {

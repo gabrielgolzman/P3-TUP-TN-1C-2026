@@ -14,7 +14,6 @@ const BookItem = ({
   rating,
   available,
   imageUrl,
-  summary,
   onShowDeleteModal
 }) => {
   const [bookAvailability, setBookAvailability] = useState(available);
@@ -26,13 +25,7 @@ const BookItem = ({
   const bookStarsEmpty = Array.from({ length: 5 - rating }, (_, i) => <Star key={i} />)
 
   const handleSelectBook = () => {
-    navigate(`${id}`, {
-      state: {
-        book: {
-          title, author, rating, pageCount, summary, imageUrl, available
-        }
-      }
-    })
+    navigate(`${id}`)
   };
 
   const handleChangeAvailability = () => {
