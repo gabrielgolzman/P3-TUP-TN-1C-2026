@@ -1,13 +1,17 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 import classNames from "classnames";
 import { Button, Card, Col, Form, FormGroup, Row } from "react-bootstrap";
 import { initialLoginFormErrors } from "./Login.data";
 import { useNavigate } from "react-router";
+import ToggleTheme from "../../toggleTheme/ToggleTheme";
+import { AuthenticationContext } from "../../services/auth/authentication.context";
 
-const Login = ({ onLogin }) => {
+const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState(initialLoginFormErrors);
+
+    const { handleUserLogin } = useContext(AuthenticationContext);
 
     const emailInputRef = useRef(null);
     const passwordInputRef = useRef(null);
@@ -57,8 +61,7 @@ const Login = ({ onLogin }) => {
         })
             .then(res => res.json())
             .then(({ token }) => {
-                localStorage.setItem("book-champions-token", token);
-                onLogin();
+                handleUserLogin(token);
                 navigate("/library")
             })
             .catch(err => console.log(err))
@@ -107,6 +110,7 @@ const Login = ({ onLogin }) => {
                         </Col>
                     </Row>
                 </Form>
+                <ToggleTheme />
             </Card.Body>
         </Card>
     );

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Route, Routes, useLocation, useNavigate } from "react-router";
 import { Button } from "react-bootstrap";
 import { successToast } from "../../shared/toast/toast";
@@ -6,9 +6,13 @@ import BooksContainer from "../booksContainer/BooksContainer"
 import NewBook from "../newBook/NewBook"
 import NotFound from "../../routes/notFound/NotFound";
 import BookDetails from "../bookDetails/BookDetails";
+import { AuthenticationContext } from "../../services/auth/authentication.context";
+import ToggleTheme from "../../toggleTheme/ToggleTheme";
 
-const Dashboard = ({ onLogout }) => {
+const Dashboard = () => {
     const [books, setBooks] = useState([]);
+
+    const { handleUserLogout } = useContext(AuthenticationContext);
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -58,13 +62,14 @@ const Dashboard = ({ onLogout }) => {
     }
 
     const handleLogout = () => {
-        onLogout()
+        handleUserLogout();
     }
     return (
 
         <>
             <div className="w-100 d-flex justify-content-end my-3 px-3 gap-2">
                 <Button variant="success" onClick={handleNavigateAddBook}>Agregar libro</Button>
+                <ToggleTheme />
                 <Button onClick={handleLogout}>Cerrar sesión</Button>
             </div>
             <Routes >

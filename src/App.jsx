@@ -3,21 +3,9 @@ import { ToastContainer } from "react-toastify";
 import Login from "./components/auth/login/Login"
 import Dashboard from "./components/biz/dashboard/Dashboard";
 import NotFound from "./components/routes/notFound/NotFound";
-import { useState } from "react";
 import Protected from "./components/routes/protected/Protected";
 import Register from "./components/auth/register/Register";
 const App = () => {
-  const [isSignedIn, setIsSignedIn] = useState(false);
-
-  const handleLogIn = () => {
-    setIsSignedIn(true);
-  }
-
-  const handleLogout = () => {
-    setIsSignedIn(false);
-    localStorage.removeItem("book-champions-token")
-  }
-
 
   return (
     <div className="d-flex flex-column align-items-center">
@@ -26,9 +14,9 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Navigate to="/library" replace />} />
           <Route path="register" element={<Register />} />
-          <Route path="login" element={<Login onLogin={handleLogIn} />} />
-          <Route element={<Protected isSignedIn={isSignedIn} />}>
-            <Route path="library/*" element={<Dashboard onLogout={handleLogout} />} />
+          <Route path="login" element={<Login />} />
+          <Route element={<Protected />}>
+            <Route path="library/*" element={<Dashboard />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
