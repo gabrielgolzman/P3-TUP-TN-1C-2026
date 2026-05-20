@@ -5,6 +5,8 @@ import { initialLoginFormErrors } from "./Login.data";
 import { useNavigate } from "react-router";
 import ToggleTheme from "../../toggleTheme/ToggleTheme";
 import { AuthenticationContext } from "../../services/auth/authentication.context";
+import ComboLanguage from "../../shared/comboLanguage/ComboLanguage";
+import useTranslation from "../../../hooks/useTranslate/useTranslation";
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -17,6 +19,7 @@ const Login = () => {
     const passwordInputRef = useRef(null);
 
     const navigate = useNavigate();
+    const t = useTranslation();
 
     const handleEmailChange = (event) => {
         setEmail(event.target.value)
@@ -72,7 +75,7 @@ const Login = () => {
         <Card className="mt-5 mx-3 p-3 px-5 shadow">
             <Card.Body>
                 <Row className="mb-2">
-                    <h5>¡Bienvenidos a Books Champion!</h5>
+                    <h5>{t("welcome")}</h5>
                 </Row>
                 <Form onSubmit={handleLogin} >
                     <FormGroup className="mb-4">
@@ -82,7 +85,7 @@ const Login = () => {
                                 "border border-danger": errors.email
                             })}
                             ref={emailInputRef}
-                            placeholder="Ingresar email"
+                            placeholder={`${t('enter')} ${t('email')}`}
                             onChange={handleEmailChange}
                             value={email}
                         />
@@ -105,11 +108,12 @@ const Login = () => {
                         <Col />
                         <Col md={6} className="d-flex justify-content-end">
                             <Button variant="secondary" type="submit">
-                                Iniciar sesión
+                                {t('login')}
                             </Button>
                         </Col>
                     </Row>
                 </Form>
+                <ComboLanguage />
                 <ToggleTheme />
             </Card.Body>
         </Card>
